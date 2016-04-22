@@ -1,5 +1,15 @@
 #!/usr/bin/env python
 ####################################################################################################
+#
+# Improvements to look at:
+# 1) Allow router data input from CLI
+# 2) Spit out example router.yaml file
+# 3) Use Python logging instead of printing to stdout
+# 4) Allow more flexibility with command(s) to send to router/switch - from CLI, from file, or
+#    default in script?
+# 5) Consider command command menu like show run, show startup, show ip int brief, etc.
+#
+####################################################################################################
 '''
 Using telnetlib, connect to a device, iterate through a specified range of addresses and ping
 each one.  Capture all the output in a specified log file.
@@ -166,6 +176,8 @@ class Netinfnode(object):
     
     def sendcmd(self, cmd, verbose=False):
         '''Execute passed command on specified node and return the output.'''
+        # Normalize string by removing trailing whitespace (primarily \r or \n)
+        cmd = cmd.rstrip()
         if verbose:
             print 'Sending command {}...'.format(cmd)
         self.connection.write(cmd + NEWLINE)
